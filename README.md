@@ -90,13 +90,4 @@ my proj/
 
 ---
 
-## 🌟 Key Features
-- **User Authentication:** Secure signup and login.
-- **Transaction Tracking:** Add, edit, and delete income and expenses.
-- **Financial Goals:** Set and monitor progress on your savings goals.
-- **AI-Powered Insights:** Get personalized financial advice based on your spending patterns.
-- **Admin Dashboard:** Specialized views for platform administrators.
 
----
-
-*Happy Budgeting!*
