@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAdviceFromClaude } from '../services/aiService.js';
+import { getAdviceFromGemini } from '../services/aiService.js';
 import { verifyToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -14,7 +14,7 @@ router.post('/advice', verifyToken, async (req, res) => {
             return res.status(400).json({ message: 'Categories are required' });
         }
         
-        const advice = await getAdviceFromClaude(categories);
+        const advice = await getAdviceFromGemini(categories);
         res.json({ advice });
     } catch (error) {
         res.status(500).json({ message: error.message });

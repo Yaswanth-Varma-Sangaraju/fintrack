@@ -1,29 +1,30 @@
-import Anthropic from '@anthropic-ai/sdk';
-import dotenv from 'dotenv';
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from "dotenv";
+
 dotenv.config();
 
-const anthropic = new Anthropic({
-    apiKey: process.env.ANTHROPIC_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-export const getAdviceFromClaude = async (categories) => {
-    if (!process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY === 'your_claude_api_key') {
-        return "Configure your Anthropic API Key for real advice.\nMock Tip 1: Cook more at home.\nMock Tip 2: Take public transport.";
+export const getAdviceFromGemini = async (categories) => {
+    if (!process.env.GEMINI_API_KEY) {
+        return "Mock Tip 1: Cook more at home.\nMock Tip 2: Use public transport.\nMock Tip 3: Track subscriptions.";
     }
 
     try {
-        const prompt = `I spent most on ${categories.join(', ')} this month. Give me 3 practical money-saving tips as 3 short bullet points. Be specific and actionable. Return only the 3 bullet points.`;
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-        const msg = await anthropic.messages.create({
-            model: "claude-3-5-sonnet-20241022",
-            max_tokens: 200,
-            messages: [{ role: "user", content: prompt }]
-        });
+        const prompt = `
+        I spent most on ${categories.join(", ")} this month.
+        Give me exactly 3 short practical money-saving bullet points.
+        Be specific and actionable.
+        `;
 
-        // Parse format from message
-        return msg.content[0].text;
+        const result = await model.generateContent(prompt);
+
+        return result.response.text();
+
     } catch (error) {
-        console.error("Claude API Error:", error);
-        throw new Error('Failed to get AI advice');
+        console.error("Gemini API Error:", error);
+        throw new Error("Failed to get AI advice");
     }
 };
