@@ -15,7 +15,13 @@ connectDB();
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173' }));
+app.use(cors({
+    origin: [
+        "http://localhost:5173",
+        "https://fintrack-465angnb3-yaswanthvarmas2006-5143s-projects.vercel.app"
+    ],
+    credentials: true
+}));
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
